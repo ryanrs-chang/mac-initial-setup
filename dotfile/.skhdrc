@@ -77,7 +77,11 @@
 # ############################################################### #
 
 # focus window
-# alt - h : yabai -m window --focus west
+
+alt - h : yabai -m window --focus west
+alt - j : yabai -m window --focus south
+alt - k : yabai -m window --focus north
+alt - l : yabai -m window --focus east
 
 # swap managed window
 # shift + alt - h : yabai -m window --swap north
@@ -94,11 +98,15 @@
 # make floating window fill left-half of screen
 # shift + alt - left   : yabai -m window --grid 1:2:0:0:1:1
 
+# destroy desktop
+shift + alt - w : yabai -m space --destroy
+
 # create desktop, move window and follow focus - uses jq for parsing json (brew install jq)
-# shift + cmd - n : yabai -m space --create && \
-#                   index="$(yabai -m query --spaces --display | jq 'map(select(."native-fullscreen" == 0))[-1].index')" && \
-#                   yabai -m window --space "${index}" && \
-#                   yabai -m space --focus "${index}"
+shift + alt - c : yabai -m space --create && \
+                  index="$(yabai -m query --spaces --display | jq 'map(select(."is-native-fullscreen" == false))[-1].index')" && \
+                  yabai -m window --space "${index}" && \
+                  yabai -m space --focus "${index}" && \
+                  echo 'Success! Move windows to latest space.' | terminal-notifier -sound default
 
 # fast focus desktop
 # cmd + alt - x : yabai -m space --focus recent
@@ -143,6 +151,14 @@ alt - t : yabai -m window --toggle float;\
           yabai -m window --grid 4:4:1:1:2:2
 
 # toggle sticky(+float), topmost, picture-in-picture
-# alt - p : yabai -m window --toggle sticky;\
-#           yabai -m window --toggle topmost;\
-#           yabai -m window --toggle pip
+alt - p : yabai -m window --toggle sticky;\
+          yabai -m window --toggle pip
+
+# binding right cmd + jkhl to up/down..
+rcmd - j : skhd -k "down"
+rcmd - k : skhd -k "up"
+rcmd - h : skhd -k "left"
+rcmd - l : skhd -k "right"
+
+
+

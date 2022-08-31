@@ -24,6 +24,8 @@ brew 'nodejs'
 cask 'postman'
 cask 'iterm2'
 
+cask 'studio-3t'
+
 ## container, k8s, docker
 # cask 'docker'
 cask 'rancher'
@@ -48,3 +50,4 @@ cask 'raycast' # Launcher
 cask 'alt-tab'
 brew 'fzf'
 brew 'fasd'
+brew 'terminal-notifier'
