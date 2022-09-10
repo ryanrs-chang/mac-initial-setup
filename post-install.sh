@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 
-# ------------------------------
-# Post-Install module configuration
-# ------------------------------
+# ---------------------------------------------
+#
+#       Post-Install module configuration
+#
+# ---------------------------------------------
 
 FILE=~/.ssh/id_rsa
 if ! test -f "$FILE"; then
@@ -30,7 +32,12 @@ sudo npm install -g npm-check-updates
 
 $(brew --prefix)/opt/fzf/install
 
-# setup yabai
+# ------------------------------
+#
+#     Setup window manager
+#
+# ------------------------------
 
 brew services start yabai
 brew services start skhd
+brew services start spacebar

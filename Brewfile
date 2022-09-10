@@ -1,4 +1,4 @@
-
+#
 # Utility
 
 brew 'neofetch'
@@ -46,7 +46,11 @@ cask 'notion'
 brew 'koekeishiya/formulae/yabai'
 ## https://github.com/koekeishiya/skhd#install
 brew 'koekeishiya/formulae/skhd'
-cask 'raycast' # Launcher
+## https://github.com/cmacrae/spacebar
+brew 'cmacrae/formulae/spacebar'
+
+## Launcher
+cask 'raycast'
 cask 'alt-tab'
 brew 'fzf'
 brew 'fasd'
