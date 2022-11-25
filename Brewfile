@@ -8,6 +8,7 @@ brew 'jq'
 brew 'wget'
 brew 'htop'
 brew 'iproute2mac'
+brew 'watch'
 
 # Communication
 

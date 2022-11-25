@@ -77,10 +77,9 @@
 # ############################################################### #
 
 # focus window
-
 alt - h : yabai -m window --focus west
-alt - j : yabai -m window --focus south
-alt - k : yabai -m window --focus north
+alt - j : ~/mac-initial-setup/move_window.sh next
+alt - k : ~/mac-initial-setup/move_window.sh prev
 alt - l : yabai -m window --focus east
 
 # swap managed window
@@ -177,5 +176,5 @@ rcmd - k : skhd -k "up"
 rcmd - h : skhd -k "left"
 rcmd - l : skhd -k "right"
 
-
-
+rcmd + rshift - j : skhd -k pagedown # page down
+rcmd + rshift - k : skhd -k pageup # page up

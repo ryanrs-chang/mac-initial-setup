@@ -68,6 +68,9 @@ if command -v spacebar &>/dev/null; then
     yabai -m config external_bar all:0:$SPACEBAR_HEIGHT
 fi
 
+# TODO: check exists
+yabai -m signal --add event=space_changed action="hs -c 'stackline.manager:update({forceRedraw = true})'"
+
 echo "yabai configuration loaded.."
 
 
