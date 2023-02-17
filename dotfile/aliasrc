@@ -8,3 +8,5 @@ alias nowdate='date +"%d-%m-%Y"'
 alias vi=vim
 
 alias top='htop'
+
+alias ibrew='arch -x86_64 /usr/local/bin/brew'
