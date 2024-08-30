@@ -24,7 +24,7 @@ spacebar -m config clock_icon_color     0xffa8a8a8
 spacebar -m config power_icon_strip      
 # spacebar -m config space_icon_strip     I II III IV V VI VII VIII IX X
 spacebar -m config space_icon_strip     Main 2 3 4 5 6 7 8 9 10
-spacebar -m config clock_icon           􀐫
+spacebar -m config clock_icon           
 spacebar -m config dnd_icon             
 spacebar -m config clock_format         "%m/%d %R"
 
@@ -33,8 +33,8 @@ spacebar -m config right_shell_icon     
 spacebar -m config right_shell_command  ""
 
 spacebar -m config left_shell          on
-# 
-spacebar -m config left_shell_icon     "􀉤"
+# 
+spacebar -m config left_shell_icon     
 # spacebar -m config left_shell_command "ls"
 # spacebar -m config left_shell_command  "yabai -m query --spaces --space | jq -r 'if .type == \"bsp\" then \"stack\" else \"bsp\" end'"
 spacebar -m config left_shell_command "/Users/ryanchang/mac-initial-setup/left_shell.sh"

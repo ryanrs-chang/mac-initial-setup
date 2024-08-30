@@ -2,13 +2,13 @@
 # Utility
 
 brew 'neofetch'
-brew 'wget'
 brew 'git'
 brew 'jq'
 brew 'wget'
 brew 'htop'
 brew 'iproute2mac'
 brew 'watch'
+brew 'tree'
 
 # Communication
 
@@ -17,24 +17,26 @@ cask 'slack'
 
 # browser
 
-cask 'microsoft-edge'
-cask 'firefox'
+cask 'arc'
+# cask 'microsoft-edge'
+# cask 'firefox'
 
 # development
 brew 'nodejs'
 cask 'postman'
 cask 'iterm2'
 
-cask 'studio-3t'
+# cask 'studio-3t'
 
 ## container, k8s, docker
 # cask 'docker'
-cask 'rancher'
-brew 'lima'
+# cask 'rancher'
+# brew 'lima'
 brew 'nerdctl'
 brew 'skopeo'
 brew 'k9s'
 cask 'lens'
+cask 'orbstack'
 
 ## Editor&Note
 cask 'visual-studio-code'
@@ -55,4 +57,6 @@ cask 'raycast'
 cask 'alt-tab'
 brew 'fzf'
 brew 'fasd'
+# https://github.com/sharkdp/bat
+brew 'bat'
 brew 'terminal-notifier'

@@ -32,7 +32,7 @@ init_dotfile .p10k.zsh $HOME
 init_dotfile yabairc $HOME_DOTFILE_PATH/yabai
 init_dotfile skhdrc $HOME_DOTFILE_PATH/skhd
 init_dotfile spacebarrc $HOME_DOTFILE_PATH/spacebar
-init_dotfile aliasrc $HOME_DOTFILE_PATH/alias
+init_dotfile aliasrc $HOME_DOTFILE_PATH/aliasrc
 
 ## -------------------------------------------------
 

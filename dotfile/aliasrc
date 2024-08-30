@@ -1,12 +1,55 @@
 #!/usr/bin/env zsh
 
-alias path='echo -e ${PATH//:/\\n}'
-alias now='date +"%T"'
-alias nowtime=now
-alias nowdate='date +"%d-%m-%Y"'
+export FZF_DEFAULT_OPTS='--no-height --no-reverse -0 -1'
+export FZF_CTRL_T_OPTS="--preview '(bat --style=numbers --color=always --line-range :500 {} || tree -C {}) 2> /dev/null | head -200'"
 
-alias vi=vim
+# alias path='echo -e ${PATH//:/\\n}'
+# alias now='date +"%T"'
+# alias nowtime=now
+# alias nowdate='date +"%d-%m-%Y"'
+# alias ibrew='arch -x86_64 /usr/local/bin/brew'
 
+alias vi='vim'
 alias top='htop'
+alias cat='bat'
 
-alias ibrew='arch -x86_64 /usr/local/bin/brew'
+# git
+
+alias gs='git status'
+alias ga='git add'
+alias gc='git commit'
+alias gcm='git commit -m'
+alias gca='git commit --amend'
+alias gco='git checkout'
+alias gb='git branch'
+alias gba='git branch -a'
+alias gbd='git branch -d'
+alias gbm='git branch -m'
+alias gbs='git branch --sort=-committerdate'
+alias glog='git log'
+alias glogp='git log --pretty=oneline'
+alias glogl='git log --oneline'
+alias glogd='git log --oneline --decorate'
+alias glogg='git log --oneline --graph'
+
+alias gpull='git pull'
+alias gpush='git push'
+
+alias gdiff='git diff'
+
+## with fzf
+
+alias gcof='git checkout $(git branch | fzf --cycle --border --ansi -0)'
+alias gbf='git branch | fzf --cycle --border --ansi -0'
+
+# kubectl
+
+alias k='kubectl'
+alias kg='kubectl get'
+alias kga='kubectl get all'
+alias kd='kubectl describe'
+alias kdp='kubectl describe pod'
+alias kds='kubectl describe service'
+alias kdd='kubectl describe deployment'
+alias kde='kubectl describe event'
+alias kdl='kubectl logs'

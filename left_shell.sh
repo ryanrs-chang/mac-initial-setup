@@ -3,7 +3,7 @@
 is_on() {
   app=$1
   port=$2
-  if nc -z 127.0.0.1 $port 2>/dev/null && ssh root@localhost -o ConnectTimeout=1 -p $port exit >/dev/null; then
+  if nc -z 127.0.0.1 $port 2>/dev/null && ssh root@localhost -o ConnectTimeout=1 -o StrictHostKeyChecking=no -p $port exit >/dev/null; then
     echo "$app"
   else
     echo ""
@@ -27,7 +27,7 @@ if [ "$res" != "" ]; then
 fi
 
 if [ "$result" == "" ]; then
-  echo "no port available"
+  echo "PFW Off"
 else
   echo $result | sed -E 's/.$//'
 fi

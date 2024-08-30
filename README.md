@@ -13,8 +13,6 @@ cd ./mac-initial-setup
 
 ## Install Brew
 
-
-
 ```shell
 brew bundle
 ```
