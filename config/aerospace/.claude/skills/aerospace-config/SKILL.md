@@ -8,7 +8,7 @@ version: 1.0.0
 
 ## Config Location
 
-The AeroSpace config file is at: `~/.config/aerospace/aerospace.toml` (tracked in `~/mac-initial-setup/home/.config/aerospace/`)
+The AeroSpace config file is at: `~/.config/aerospace/aerospace.toml` (symlink to `~/mac-initial-setup/config/aerospace/aerospace.toml`)
 
 Format: TOML (version 2)
 

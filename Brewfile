@@ -99,6 +99,7 @@ cask "beekeeper-studio"
 
 # ---------- Secrets / infra ----------
 brew "sops"
+brew "gitleaks"
 brew "age"
 brew "ansible"
 brew "rclone"
