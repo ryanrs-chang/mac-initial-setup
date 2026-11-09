@@ -1,0 +1,61 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+# Mirrors the previous p10k layout:
+#   line 1: os icon, directory, git
+#   line 2: prompt char
+#   right:  exit status, command duration, background jobs
+add_newline = false
+
+format = """
+$os$directory$git_branch$git_state$git_status
+$character"""
+
+right_format = "$status$cmd_duration$jobs$kubernetes"
+
+[os]
+disabled = false
+style = "bold white"
+
+[os.symbols]
+Macos = " "
+
+[directory]
+truncation_length = 4
+truncate_to_repo = false
+style = "bold cyan"
+
+[git_branch]
+symbol = " "
+format = "[$symbol$branch]($style) "
+style = "bold green"
+
+[git_status]
+format = '([$all_status$ahead_behind]($style) )'
+style = "bold yellow"
+
+[character]
+success_symbol = "[❯](bold green)"
+error_symbol = "[❯](bold red)"
+vimcmd_symbol = "[❮](bold green)"
+
+[status]
+disabled = false
+format = "[✘ $status]($style) "
+style = "red"
+
+[cmd_duration]
+min_time = 3_000
+format = "[ $duration]($style) "
+style = "yellow"
+
+[jobs]
+symbol = " "
+style = "cyan"
+
+# Show the k8s context only while typing kubectl/k9s/helm-related commands is not supported
+# by starship, so it is limited to directories that look like k8s projects.
+[kubernetes]
+disabled = false
+format = "[󱃾 $context( \\($namespace\\))]($style) "
+style = "blue"
+detect_files = ["kustomization.yaml", "Chart.yaml", "skaffold.yaml"]

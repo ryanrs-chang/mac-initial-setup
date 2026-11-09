@@ -2,3 +2,4 @@
 .aerospace.toml
 .gitignore_global
 .config/aliasrc
+.p10k.zsh

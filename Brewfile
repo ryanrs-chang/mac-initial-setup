@@ -19,6 +19,7 @@ cask "font-lxgw-wenkai-tc"
 
 # ---------- Shell / CLI utilities ----------
 brew "chezmoi"
+brew "starship"
 brew "git"
 brew "git-delta"
 brew "fzf"
