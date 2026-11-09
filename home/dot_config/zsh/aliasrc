@@ -53,3 +53,5 @@ alias kds='kubectl describe service'
 alias kdd='kubectl describe deployment'
 alias kde='kubectl describe event'
 alias kdl='kubectl logs'
+
+alias gcs='gcloud storage'

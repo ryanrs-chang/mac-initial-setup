@@ -1,0 +1,4 @@
+# Stale paths from the old setup; chezmoi apply deletes them.
+.aerospace.toml
+.gitignore_global
+.config/aliasrc

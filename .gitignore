@@ -1,0 +1,9 @@
+.DS_Store
+Brewfile.lock.json
+__pycache__/
+*.bak
+*.bak[0-9]*
+.claude/settings.local.json
+
+# Third-party source checkouts that don't belong in this repo
+/fasd/

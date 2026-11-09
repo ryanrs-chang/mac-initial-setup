@@ -1,0 +1,17 @@
+[user]
+	name = Ryan Chang
+	email = ryan.chang@maxnion.com
+[core]
+	pager = delta
+[init]
+	defaultBranch = main
+[interactive]
+	diffFilter = delta --color-only
+[delta]
+	navigate = true
+	line-numbers = true
+	keep-plus-minus-markers = true
+[merge]
+	conflictStyle = zdiff3
+[url "git@gitlab.com:"]
+	insteadOf = https://gitlab.com/

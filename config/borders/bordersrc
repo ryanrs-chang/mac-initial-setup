@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Highlight only the focused window; unfocused windows get no border.
+options=(
+  style=round
+  width=6.0
+  hidpi=on
+  active_color=0xff7aa2f7
+  inactive_color=0x00000000
+)
+
+borders "${options[@]}"

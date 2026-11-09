@@ -1,0 +1,360 @@
+#!/bin/sh
+
+# This is a demo config to showcase some of the most important commands.
+# It is meant to be changed and configured, as it is intentionally kept sparse.
+# For a (much) more advanced configuration example see my dotfiles:
+# https://github.com/FelixKratz/dotfiles
+
+PLUGIN_DIR="$CONFIG_DIR/plugins"
+
+# Add PATH environment for plugins
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
+
+##### Bar Appearance #####
+# Configuring the general appearance of the bar.
+# These are only some of the options available. For all options see:
+# https://felixkratz.github.io/SketchyBar/config/bar
+# If you are looking for other colors, see the color picker:
+# https://felixkratz.github.io/SketchyBar/config/tricks#color-picker
+
+sketchybar --bar position=top height=40 blur_radius=30 color=0x40000000
+
+##### Changing Defaults #####
+# We now change some default values, which are applied to all further items.
+# For a full list of all available item properties see:
+# https://felixkratz.github.io/SketchyBar/config/items
+
+default=(
+  padding_left=5
+  padding_right=5
+  icon.font="Hack Nerd Font:Bold:17.0"
+  label.font="Hack Nerd Font:Bold:14.0"
+  icon.color=0xffffffff
+  label.color=0xffffffff
+  icon.padding_left=4
+  icon.padding_right=4
+  label.padding_left=4
+  label.padding_right=4
+)
+sketchybar --default "${default[@]}"
+
+##### Adding Mission Control Space Indicators #####
+# Let's add some mission control spaces:
+# https://felixkratz.github.io/SketchyBar/config/components#space----associate-mission-control-spaces-with-an-item
+# to indicate active and available mission control spaces.
+
+# AeroSpace mode: workspaces are virtual (not native Spaces), so use plain items
+# and drive highlighting via a custom event triggered from aerospace.toml.
+# See: https://nikitabobko.github.io/AeroSpace/goodies#show-aerospace-workspaces-in-sketchybar
+sketchybar --add event aerospace_workspace_change
+for sid in $(aerospace list-workspaces --all); do
+  # Role icon per workspace (matches on-window-detected rules in aerospace.toml)
+  case "$sid" in
+    1) ws_icon="" ;;  # terminal
+    2) ws_icon="󰖟" ;;  # browser
+    3) ws_icon="" ;;  # editor
+    4) ws_icon="" ;;  # dev tools
+    5) ws_icon="󰠮" ;;  # notes
+    6) ws_icon="󰒱" ;;  # work chat
+    7) ws_icon="󰚩" ;;  # AI
+    8) ws_icon="󰭹" ;;  # personal chat
+    9) ws_icon="󰝚" ;;  # leisure
+    *) ws_icon="" ;;
+  esac
+  space=(
+    icon="$sid"
+    icon.padding_left=7
+    icon.padding_right=7
+    background.color=0x40ffffff
+    background.corner_radius=5
+    background.height=25
+    background.drawing=off
+    label="$ws_icon"
+    script="$PLUGIN_DIR/space.sh"
+    click_script="aerospace workspace $sid"
+  )
+  sketchybar --add item space."$sid" left \
+             --set space."$sid" "${space[@]}" \
+             --subscribe space."$sid" aerospace_workspace_change
+done
+
+##### Adding Left Items #####
+# We add some regular items to the left side of the bar, where
+# only the properties deviating from the current defaults need to be set
+
+sketchybar --add event aerospace_layout_change \
+           --add item chevron left \
+           --set chevron icon= label.drawing=off \
+           --add item front_app left \
+           --set front_app icon.drawing=off script="$PLUGIN_DIR/front_app.sh" \
+           --subscribe front_app front_app_switched aerospace_layout_change aerospace_workspace_change
+
+# AeroSpace layout, shown as "[root] › [parent] N":
+#   layout_root + layout_sep only appear when the focused window is nested (after join / move-out);
+#   layout is the focused window's parent container; layout_count is windows on the workspace.
+# layout.sh drives all four items.
+layout_image=(
+  icon.drawing=off
+  label.drawing=off
+  width=38
+  background.drawing=on
+  background.color=0x00000000
+  background.image.drawing=on
+  background.image.scale=0.5
+  background.image.padding_left=6
+)
+sketchybar --add item layout_root left \
+           --set layout_root "${layout_image[@]}" drawing=off \
+           --add item layout_sep left \
+           --set layout_sep icon.drawing=off label="›" padding_left=0 padding_right=0 drawing=off \
+           --add item layout left \
+           --set layout "${layout_image[@]}" script="$PLUGIN_DIR/layout.sh" \
+           --subscribe layout aerospace_layout_change aerospace_workspace_change front_app_switched \
+           --add item layout_count left \
+           --set layout_count icon.drawing=off label.color=0xaaffffff label.padding_left=8 padding_left=0 drawing=off
+
+
+##### Adding Right Items #####
+# In the same way as the left items we can add items to the right side.
+# Additional position (e.g. center) are available, see:
+# https://felixkratz.github.io/SketchyBar/config/items#adding-items-to-sketchybar
+
+# Some items refresh on a fixed cycle, e.g. the clock runs its script once
+# every 10s. Other items respond to events they subscribe to, e.g. the
+# volume.sh script is only executed once an actual change in system audio
+# volume is registered. More info about the event system can be found here:
+# https://felixkratz.github.io/SketchyBar/config/events
+
+sketchybar --add item clock right \
+           --set clock update_freq=10 icon= script="$PLUGIN_DIR/clock.sh" \
+           --add item volume right \
+           --set volume script="$PLUGIN_DIR/volume.sh" \
+           --subscribe volume volume_change \
+           --add item battery right \
+           --set battery update_freq=120 script="$PLUGIN_DIR/battery.sh" \
+           --subscribe battery system_woke power_source_change \
+           --add item kubecontext right \
+           --set kubecontext script="$PLUGIN_DIR/kubecontext.sh" \
+                             update_freq=30 \
+                             click_script="$PLUGIN_DIR/kubecontext.sh toggle_popup" \
+                             icon=󱃾 \
+                             icon.font="Hack Nerd Font:Bold:18.0" \
+                             icon.color=0xff326ce5 \
+                             icon.padding_left=8 \
+                             icon.padding_right=4 \
+                             label.font="Hack Nerd Font:Bold:13.0" \
+                             label.color=0xffa0a0a0 \
+                             label.padding_right=8 \
+                             background.color=0x30326ce5 \
+                             background.corner_radius=12 \
+                             background.height=28 \
+                             background.drawing=on \
+                             popup.background.color=0xe0181818 \
+                             popup.background.border_width=1 \
+                             popup.background.corner_radius=12 \
+                             popup.background.border_color=0x80326ce5 \
+                             popup.blur_radius=30 \
+                             popup.height=32 \
+                             popup.horizontal=off \
+                             popup.align=right \
+           --subscribe kubecontext mouse.exited.global front_app_switched space_change
+
+# dbc port-forwards: hidden when none are up; dbc triggers dbc_change on up/stop,
+# update_freq catches forwards that died on their own.
+sketchybar --add event dbc_change \
+           --add item dbc right \
+           --set dbc script="$PLUGIN_DIR/dbc.sh" \
+                     update_freq=15 \
+                     drawing=off \
+                     click_script="$PLUGIN_DIR/dbc.sh toggle_popup" \
+                     icon=󰆼 \
+                     icon.font="Hack Nerd Font:Bold:16.0" \
+                     icon.padding_left=8 \
+                     icon.padding_right=4 \
+                     label.font="Hack Nerd Font:Bold:13.0" \
+                     label.padding_right=8 \
+                     background.corner_radius=12 \
+                     background.height=28 \
+                     background.drawing=on \
+                     popup.background.color=0xe0181818 \
+                     popup.background.border_width=1 \
+                     popup.background.corner_radius=12 \
+                     popup.background.border_color=0x8073daca \
+                     popup.blur_radius=30 \
+                     popup.height=32 \
+                     popup.horizontal=off \
+                     popup.align=right \
+           --subscribe dbc dbc_change mouse.exited.global front_app_switched space_change
+
+sketchybar --add item claude_usage right \
+           --set claude_usage script="$PLUGIN_DIR/claude_usage.py" \
+                              update_freq=15 \
+                              click_script="$PLUGIN_DIR/claude_usage.py toggle_popup" \
+                              icon.drawing=off \
+                              label.font="Hack Nerd Font:Bold:13.0" \
+                              label.color=0xffffffff \
+                              label.padding_right=10 \
+                              popup.background.color=0xe0181818 \
+                              popup.background.border_width=1 \
+                              popup.background.corner_radius=12 \
+                              popup.background.border_color=0x80da8548 \
+                              popup.blur_radius=30 \
+                              popup.align=right \
+           --add item claude_usage.popup.bar popup.claude_usage \
+           --set claude_usage.popup.bar \
+                    icon.drawing=off \
+                    label="—" \
+                    label.font="Hack Nerd Font Mono:Regular:13.0" \
+                    label.color=0xffffffff \
+                    label.padding_left=12 \
+                    label.padding_right=12 \
+           --add item claude_usage.popup.window popup.claude_usage \
+           --set claude_usage.popup.window \
+                    icon=󰥔 \
+                    icon.font="Hack Nerd Font:Bold:14.0" \
+                    icon.color=0xffda8548 \
+                    icon.padding_left=10 \
+                    icon.padding_right=6 \
+                    label="—" \
+                    label.font="Hack Nerd Font:Bold:13.0" \
+                    label.color=0xffaaaaaa \
+                    label.padding_right=12 \
+           --add item claude_usage.popup.resets popup.claude_usage \
+           --set claude_usage.popup.resets \
+                    icon=󰑖 \
+                    icon.font="Hack Nerd Font:Bold:14.0" \
+                    icon.color=0xffda8548 \
+                    icon.padding_left=10 \
+                    icon.padding_right=6 \
+                    label="—" \
+                    label.font="Hack Nerd Font:Bold:13.0" \
+                    label.color=0xffaaaaaa \
+                    label.padding_right=12 \
+           --add item claude_usage.popup.burn popup.claude_usage \
+           --set claude_usage.popup.burn \
+                    icon=󱐋 \
+                    icon.font="Hack Nerd Font:Bold:14.0" \
+                    icon.color=0xffda8548 \
+                    icon.padding_left=10 \
+                    icon.padding_right=6 \
+                    label="—" \
+                    label.font="Hack Nerd Font:Bold:13.0" \
+                    label.color=0xffaaaaaa \
+                    label.padding_right=12 \
+           --add item claude_usage.popup.sessions popup.claude_usage \
+           --set claude_usage.popup.sessions \
+                    icon=󰚩 \
+                    icon.font="Hack Nerd Font:Bold:14.0" \
+                    icon.color=0xffda8548 \
+                    icon.padding_left=10 \
+                    icon.padding_right=6 \
+                    label="—" \
+                    label.font="Hack Nerd Font:Bold:13.0" \
+                    label.color=0xffaaaaaa \
+                    label.padding_right=12 \
+           --subscribe claude_usage mouse.exited.global front_app_switched space_change \
+           --add item claude_icon right \
+           --set claude_icon click_script="$PLUGIN_DIR/claude_usage.py toggle_popup" \
+                             icon.drawing=off \
+                             label.drawing=off \
+                             width=26 \
+                             background.drawing=on \
+                             background.color=0x00000000 \
+                             background.height=28 \
+                             background.image="$CONFIG_DIR/icons/claude.png" \
+                             background.image.drawing=on \
+                             background.image.scale=0.14 \
+                             background.image.padding_left=6 \
+           --add bracket claude_group claude_icon claude_usage \
+           --set claude_group background.color=0x30da8548 \
+                              background.corner_radius=12 \
+                              background.height=28 \
+                              background.drawing=on
+
+##### Adding Spotify Dock #####
+# Inline dock style: controls slide in on hover, no popup blocking other items
+# Items are added right-to-left (first added = rightmost)
+SPOTIFY_EVENT="com.spotify.client.PlaybackStateChanged"
+
+sketchybar --add event spotify_change $SPOTIFY_EVENT                  \
+                                                                      \
+           --add item spotify.repeat right                            \
+           --set spotify.repeat icon=󰑖                                 \
+                                icon.font="Hack Nerd Font:Bold:14.0"  \
+                                icon.color=0xff555555                  \
+                                icon.highlight_color=0xff1DB954        \
+                                icon.padding_left=4                    \
+                                icon.padding_right=6                   \
+                                label.drawing=off                      \
+                                drawing=off                            \
+                                script="$PLUGIN_DIR/spotify.sh"        \
+           --subscribe spotify.repeat mouse.clicked                   \
+                                                                      \
+           --add item spotify.next right                              \
+           --set spotify.next icon=󰒭                                   \
+                              icon.font="Hack Nerd Font:Bold:16.0"    \
+                              icon.color=0xffc0c0c0                   \
+                              icon.padding_left=4                     \
+                              icon.padding_right=4                    \
+                              label.drawing=off                       \
+                              drawing=off                             \
+                              script="$PLUGIN_DIR/spotify.sh"         \
+           --subscribe spotify.next mouse.clicked                     \
+                                                                      \
+           --add item spotify.play right                              \
+           --set spotify.play icon=󰐊                                   \
+                              icon.font="Hack Nerd Font:Bold:20.0"    \
+                              icon.color=0xff1DB954                   \
+                              icon.padding_left=4                     \
+                              icon.padding_right=4                    \
+                              label.drawing=off                       \
+                              drawing=off                             \
+                              script="$PLUGIN_DIR/spotify.sh"         \
+           --subscribe spotify.play mouse.clicked spotify_change      \
+                                                                      \
+           --add item spotify.back right                              \
+           --set spotify.back icon=󰒮                                   \
+                              icon.font="Hack Nerd Font:Bold:16.0"    \
+                              icon.color=0xffc0c0c0                   \
+                              icon.padding_left=4                     \
+                              icon.padding_right=4                    \
+                              label.drawing=off                       \
+                              drawing=off                             \
+                              script="$PLUGIN_DIR/spotify.sh"         \
+           --subscribe spotify.back mouse.clicked                     \
+                                                                      \
+           --add item spotify.shuffle right                           \
+           --set spotify.shuffle icon=󰒟                                \
+                                 icon.font="Hack Nerd Font:Bold:14.0" \
+                                 icon.color=0xff555555                \
+                                 icon.highlight_color=0xff1DB954      \
+                                 icon.padding_left=6                  \
+                                 icon.padding_right=4                 \
+                                 label.drawing=off                    \
+                                 drawing=off                          \
+                                 script="$PLUGIN_DIR/spotify.sh"      \
+           --subscribe spotify.shuffle mouse.clicked                  \
+                                                                      \
+           --add item spotify.anchor right                            \
+           --set spotify.anchor script="$PLUGIN_DIR/spotify.sh"       \
+                                update_freq=5                         \
+                                icon=󰓇                                \
+                                icon.font="Hack Nerd Font:Bold:18.0"  \
+                                icon.color=0xff1DB954                 \
+                                icon.padding_left=8                   \
+                                icon.padding_right=4                  \
+                                label.font="Hack Nerd Font:Bold:13.0" \
+                                label.color=0xffa0a0a0                \
+                                label.padding_right=8                 \
+                                label.drawing=on                      \
+                                background.color=0x301DB954           \
+                                background.corner_radius=12           \
+                                background.height=28                  \
+                                background.drawing=on                 \
+                                drawing=off                           \
+           --subscribe spotify.anchor spotify_change                  \
+                                      mouse.entered                   \
+                                      mouse.exited.global
+
+##### Force all scripts to run the first time (never do this in a script) #####
+sketchybar --update

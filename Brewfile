@@ -1,62 +1,146 @@
-#
-# Utility
+# Regenerate a raw list to diff against: brew bundle dump --file=- --no-vscode --no-go --no-npm --no-uv --no-cargo
 
-brew 'neofetch'
-brew 'git'
-brew 'jq'
-brew 'wget'
-brew 'htop'
-brew 'iproute2mac'
-brew 'watch'
-brew 'tree'
+tap "nikitabobko/tap"
+tap "felixkratz/formulae"
+tap "f1bonacc1/tap"
+tap "coollabsio/coolify-cli"
+tap "ory/tap"
 
-# Communication
+# ---------- Window manager / desktop ----------
+cask "nikitabobko/tap/aerospace"   # tiling WM (replaces yabai + skhd)
+brew "felixkratz/formulae/sketchybar"
+brew "felixkratz/formulae/borders"
+cask "karabiner-elements"
+cask "raycast"
+cask "dockdoor"
+cask "font-hack-nerd-font"
+cask "font-ia-writer-quattro"
+cask "font-lxgw-wenkai-tc"
 
-cask 'slack'
-# cask microsoft-teams
+# ---------- Shell / CLI utilities ----------
+brew "chezmoi"
+brew "git"
+brew "git-delta"
+brew "fzf"
+brew "bat"
+brew "ripgrep"
+brew "jq"
+brew "yq"
+brew "dust"
+brew "htop"
+brew "watch"
+brew "wget"
+brew "tree"
+brew "rlwrap"
+brew "just"
+brew "neofetch"
+brew "iproute2mac"
+brew "terminal-notifier"
+brew "cliclick"
+brew "worktrunk"
 
-# browser
+# ---------- Terminal / editors ----------
+cask "ghostty"
+cask "iterm2"
+cask "warp"
+cask "zed"
+cask "visual-studio-code"
+brew "neovim"
+brew "vim"
 
-cask 'arc'
-# cask 'microsoft-edge'
-# cask 'firefox'
+# ---------- Languages / build ----------
+brew "node"
+brew "yarn", link: false
+brew "go@1.24"
+brew "golangci-lint"
+brew "golang-migrate"
+brew "pipx"
+brew "lefthook"
+brew "pre-commit"
+brew "actionlint"
 
-# development
-brew 'nodejs'
-cask 'postman'
-cask 'iterm2'
+# ---------- Containers / k8s / cloud ----------
+cask "orbstack"
+brew "k9s"
+brew "helm"
+brew "kubetail"
+brew "awscli"
+brew "flyctl"
+brew "cloudflared"
+brew "cloudflare-wrangler"
+brew "coollabsio/coolify-cli/coolify-cli"
+cask "cloudflare-warp"
+cask "tailscale-app"
+cask "ngrok"
 
-# cask 'studio-3t'
+# ---------- Backend / API / DB ----------
+brew "postgresql@18"
+brew "temporal"
+brew "cadence-workflow"
+brew "f1bonacc1/tap/process-compose"
+brew "ory/tap/hydra"
+brew "opa"
+brew "egctl"
+brew "func-e"
+brew "caddy"
+brew "mkcert"
+brew "grpcurl"
+brew "hurl"
+brew "k6"
+brew "oha"
+brew "allure"
+brew "logcli"
+cask "yaak"
+cask "postman"
+cask "tableplus"
+cask "dbeaver-community"
+cask "beekeeper-studio"
 
-## container, k8s, docker
-# cask 'docker'
-# cask 'rancher'
-# brew 'lima'
-brew 'nerdctl'
-brew 'skopeo'
-brew 'k9s'
-cask 'lens'
-cask 'orbstack'
+# ---------- Secrets / infra ----------
+brew "sops"
+brew "age"
+brew "ansible"
+brew "rclone"
 
-## Editor&Note
-cask 'visual-studio-code'
-brew 'vim'
-cask 'notion'
+# ---------- Git hosting / AI ----------
+brew "gh"
+brew "glab"
+brew "gemini-cli"
+cask "claude"
+cask "chatgpt"
 
-# System
+# ---------- Media / docs ----------
+brew "ffmpeg"
+brew "yt-dlp"
+brew "whisper.cpp"
+brew "portaudio"
+brew "imagemagick"
+brew "exiftool"
+brew "media-info"
+brew "timg"
+brew "potrace"
+brew "svgo"
+brew "ghostscript"
+brew "poppler"
+brew "qpdf"
+brew "pandoc"
+brew "asciinema"
+brew "create-dmg"
+brew "libimobiledevice"
+cask "basictex"
+cask "inkscape"
+cask "figma"
+cask "drawio"
 
-## https://github.com/koekeishiya/yabai/wiki/Installing-yabai-(latest-release)
-brew 'koekeishiya/formulae/yabai'
-## https://github.com/koekeishiya/skhd#install
-brew 'koekeishiya/formulae/skhd'
-## https://github.com/cmacrae/spacebar
-brew 'cmacrae/formulae/spacebar'
-
-## Launcher
-cask 'raycast'
-cask 'alt-tab'
-brew 'fzf'
-brew 'fasd'
-# https://github.com/sharkdp/bat
-brew 'bat'
-brew 'terminal-notifier'
+# ---------- Apps ----------
+cask "arc"
+cask "google-chrome"
+cask "slack"
+cask "telegram"
+cask "notion"
+cask "obsidian"
+cask "google-drive"
+cask "spotify"
+cask "marta"
+cask "cyberduck"
+cask "anydesk"
